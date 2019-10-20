@@ -22,11 +22,15 @@ A collection of tools useful for image manipulation and creation of data augment
 
 - **transpose(im,\*args)**: Takes an image and flips according to the transpose operation.  An optional argument "reverse" implements a "reverse transpose". Standard transpose is equivalent to the matrix operation whereas reverse transpose is a reflection across the other diagonal. Standard transposition is the same as a horizontal reflection followed by a 90 deg anticlockwise rotation or a vertical reflection followed by a 90 deg clockwise rotation. The reverse transosition can be obtained by reversing the order of the above. The reverse transpose is a 180 deg rotation of the regular transpose.
 
-- **pad(im,\*args,\**kwargs)**:
-- square_image
-- fit_to_stats
-- rotate
-- shear
+- **pad(im,\*args,\**kwargs)**: Takes an image as argument and accepts arguemts and keyword arguments to adjust settings. The "padding" keyword argument determins the type of padding and can take values "constant","copy","reflect" or "wrap". If not given, the default is constant colour black. If "greyscale" argument is given, the function knows to pad only a single layer. For constant padding, the keyword argument "pad_colour" is given, it most be a BGR vector if colour or a single integer value if greyscale. If the kwarg "pad_to_fit" is used, it must have the value of a tuple of the new dimensions. The alignment of the original image with regard to the new image is determined by the "align" kwarg that is a list containing descriptions from "top","bottom", "left" and "right". By default, the original is padded equally in all directions. 
+
+- **square_image(im,\*args,\**kwargs)**: This takes all the same optional arguments and keyword arguments as the pad function but will automatically create a square image that will have dimensions of the longest side of the origianl. Useful for creating square images that can be subsequently resxaled for input into a CNN.
+
+- **fit_to_stats(im_dict, mode, \*args, \**kwargs)**: This takes an image dictionary as input and fits to a size determined by the statistical properties of the images in that dictionary. Note that the dictionary "size" option must be used. The resize function is held within this function, so the arguments and keyword arguments there can be applied here. This includes the interpolation rules. The "mode" argument can be any of those in the get_stats funtion. 
+
+- **rotate(im,degrees,\*args,\**kwargs)**: This takes an image and rotates it by the given number of degrees. The default is clockwise but can be changed by using the "anticlockwise" argument. The default is to not change the dimensions of the image, which leads to clipping of the rotated image. If the "adjust" argument is supplied, the image dimensions change to accomodate. The default and only background is black.
+
+- **shear(im, \**kwargs)**:
 
 
 ## Statistical and Channel Transformations
