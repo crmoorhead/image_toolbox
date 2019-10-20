@@ -16,7 +16,30 @@ A collection of tools useful for image manipulation and creation of data augment
 
 ## Geometric Transformations
 
-- Resize
-- 
+- **resize(im,\*args,\**kwargs)**: The function takes an image array and changes its size according to the keyword arguments. By default, interpolation is linear, but this can be changed using the "inter" keyword with options being "nearest", "linear", "cubic", "lanczos" and "area" corresponding to nearest neighbour, linear, cubic, Lanczos and area (?) interpolation rules. The modes to be chosen via keywords are "scale_to_width", which will scale the image to a given width of pixels where the height also changes proportionally, "scale_to_height", with similar behaviour, "ratios", where the input is a tuple of the scale factors of (width, height) and "fit_dimensions", which specifies the pixels for (width, height) expicitly. THe first two preserve the aspect ratio of the original image, where the last two need not. 
+
+- reflect
+- transpose
+- pad
+- square_image
+- fit_to_stats
+- rotate
+- shear
 
 
+## Statistical and Channel Transformations
+
+- channel_mix
+- random_mix
+- jumble
+- brightness
+- blend
+- add_noise
+- denoise
+- histogram_shift
+
+## Deletion/Insertion Transformations
+
+- crop
+- mask
+- translate
