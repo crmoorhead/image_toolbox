@@ -18,9 +18,11 @@ A collection of tools useful for image manipulation and creation of data augment
 
 - **resize(im,\*args,\**kwargs)**: The function takes an image array and changes its size according to the keyword arguments. By default, interpolation is linear, but this can be changed using the "inter" keyword with options being "nearest", "linear", "cubic", "lanczos" and "area" corresponding to nearest neighbour, linear, cubic, Lanczos and area (?) interpolation rules. The modes to be chosen via keywords are "scale_to_width", which will scale the image to a given width of pixels where the height also changes proportionally, "scale_to_height", with similar behaviour, "ratios", where the input is a tuple of the scale factors of (width, height) and "fit_dimensions", which specifies the pixels for (width, height) expicitly. THe first two preserve the aspect ratio of the original image, where the last two need not. 
 
-- reflect
-- transpose
-- pad
+- **reflect(im,\*args)**: Takes an image and flips horizontally, vertically or both. Accepts arguments "H"/"horizontal" or "V"/"vertical".
+
+- **transpose(im,\*args)**: Takes an image and flips according to the transpose operation.  An optional argument "reverse" implements a "reverse transpose". Standard transpose is equivalent to the matrix operation whereas reverse transpose is a reflection across the other diagonal. Standard transposition is the same as a horizontal reflection followed by a 90 deg anticlockwise rotation or a vertical reflection followed by a 90 deg clockwise rotation. The reverse transosition can be obtained by reversing the order of the above. The reverse transpose is a 180 deg rotation of the regular transpose.
+
+- **pad(im,\*args,\**kwargs)**:
 - square_image
 - fit_to_stats
 - rotate
