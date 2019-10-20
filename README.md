@@ -1,8 +1,16 @@
 # image_toolbox
-Just a collection of codes and notebooks for image manipulation and analysis.
 
-## Convolution toolbox
+A collection of tools useful for image manipulation and creation of data augmentation policies. 
 
-Collection of tools for applying and analysing the effects of convolutional filters on sample images.
+## Image interaction
 
-## Histogram based tools
+- image_dict (source_dir,*args): Rather than work with all images in the workspace, this creates a dictionary of all filepaths in a given directory. It will only add files of type .jpg, .bmp or .png to the dictionary. It has two optional arguments, "size" and "type" which will also add information on the dimensions and file type of each file.
+
+-
+
+## Geometric Transformations
+
+- Resize
+- 
+
+
