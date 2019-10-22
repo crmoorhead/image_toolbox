@@ -157,13 +157,15 @@ def resize(im,*args,**kwargs):
         return im
 
 
-def reflect(im,*args,**kwargs):
+def reflect(im,*args):
     if "H" in args or "horizontal" in args:
         return cv2.flip(im,1)
     elif "V" in args or "vertical" in args:
         return cv2.flip(im,0)
+    else:
+        return im
 
-def transpose(im,*args,**kwargs):
+def transpose(im,*args):
     if "reverse" in args:
         return cv2.transpose(cv2.flip(im,-1))
     else:
@@ -246,7 +248,10 @@ def pad(im,*args,**kwargs):
         elif kwargs["padding"]=="constant":
             pad_rule=cv2.BORDER_CONSTANT
             if "pad_color" in kwargs:
-                color=kwargs["pad_color"]
+                if "greyscale" in args:
+                    color=[kwargs["pad_color"]]
+                else:
+                    color=kwargs["pad_color"]
             else:
                 if "greyscale" in args:
                     color=[0]
@@ -318,9 +323,8 @@ def square_image(im,*args,**kwargs):
         im=pad(im,pad_to_fit=(dims[0],dims[0]),*args,**kwargs)
     return im
 
-def fit_to_stats(im_dict,mode,inter,*args,**kwargs):
+def fit_to_stats(im_dict,mode,*args,**kwargs):
     target_stats=get_stats(im_dict,mode)
-    kwargs["inter"]=inter
     if "width" in args:
         kwargs["scale_to_width"]=target_stats[0]
         process(im_dict,[resize],*args,**kwargs)
@@ -344,7 +348,7 @@ def rotate(im, degrees,*args,**kwargs):
             im=rot(im, -degrees)
     return im
 
-def shear(im,*args,**kwargs):
+def shear(im,**kwargs):
     dims=im.shape[:2]
     if "shear_horz" in kwargs:
         affine=np.array([[1,kwargs["shear_horz"],0],[0,1,0]])
@@ -362,7 +366,7 @@ def blend(im1,im2,*args,**kwargs):
     pass
 
 def jumble(im,*args,**kwargs):
-    pass
+    return im
 
 def brightness(im,*args,**kwargs):
     if "fixed_increase" in kwargs:
@@ -410,7 +414,7 @@ def add_noise(im, *args,**kwargs):
     return np.array(np.clip(im,0,255),dtype="uint8")
 
 def denoise(im,*args,**kwargs):
-    pass
+    return im
 
 # Check if output array is empty!
 
@@ -434,10 +438,10 @@ def crop(im,*args,**kwargs):
     return im
 
 def mask(im,mask,*args,**kwargs):
-    pass
+    return im
 
 def histogram_shift(im,hist,*args,**kwargs):
-    pass
+    return im
 
 def translate(im,*args,**kwargs):
     im_dims=im.shape[:2]
@@ -458,3 +462,10 @@ def translate(im,*args,**kwargs):
         else:
             return im
 
+# Generative methods
+
+# Functional for augmentation methods
+
+image_functional={"rotate":rotate,"brightness":brightness, "resize":resize,"relection":reflect, "transpose":transpose,
+                 "jumble":jumble, "pad":pad, "shear":shear, "blend":blend, "noise":add_noise, "translate":translate, "crop":crop, "mask":mask,
+                 "denoise":denoise,"histogram":histogram_shift}
