@@ -1,6 +1,6 @@
 # image_toolbox
 
-A collection of tools useful for image manipulation and creation of data augmentation policies. 
+A collection of tools useful for image manipulation and creation of data augmentation policies. It is important to note that all transformations treat an image as an array that contains integer values between 0 and 255, although in certain circumstances non-integer values in this range are valid as the functions will output in integer values only. When passing into training, however, these arrays are normalised by dividing through by 255.
 
 ## Image interaction
 
