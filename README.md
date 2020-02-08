@@ -30,7 +30,7 @@ A collection of tools useful for image manipulation and creation of data augment
 
 - **rotate(im,degrees,\*args,\*\*kwargs)**: This takes an image and rotates it by the given number of degrees. The default is clockwise but can be changed by using the "anticlockwise" argument. The default is to not change the dimensions of the image, which leads to clipping of the rotated image. If the "adjust" argument is supplied, the image dimensions change to accomodate. The default and only background is black.
 
-- **shear(im, \*\*kwargs)**:
+- **shear(im, \*\*kwargs)**: This takes an image and applies a shear transformation to it. It requires either the "shear_horz" or "shear_vert" keywords with corresponding floats. Both cannot be applied siumultaneously. The factor is the tangent of the shear angle with the axis perpendicular to the direction of shear. Thus the final image dimensions are extended in the direction of shear by a number of pixels equal to this factor multiplied by the length of the perpendicular direction in pixels.
 
 
 ## Statistical and Channel Transformations
@@ -48,6 +48,8 @@ A collection of tools useful for image manipulation and creation of data augment
 
 ## Deletion/Insertion Transformations
 
-- crop
-- mask
-- translate
+- **crop(im,\*args,\*\*kwargs)**: This takes an image and returns a rectangular selection of the original image. There are three optional keyword arguments, "crop_centre", "crop_width" and "crop_height". All coordinates are measured from the top left hand corner of the input image with the first coordinate being the vertical direction and the second coordinate being the horizontal direction. If the centre is not specified, then the crop is measured from this corner. The crop dimensions in pixels are set by the values of "crop_width" and "crop_height" which default to the dimensions of the original image if not stated. Note that crops extending beyond the bounds of the original image are automatically clipped.
+
+- **mask(im,\*args,\*\*kwargs)**: This is the opposite of the crop function in that it returns the original image with the specified rectangular section removed. It has simalar keyword arguments ("mask_centre","mask_width" and "mask_height") that are defined as above, plus the optional "mask_colour". The value of "mask_colour" can be an RGB triple or a single value for greyscale with all values being integers in the range 0-255. The default colour is black.
+
+- **translate(im,\*args,\*\*kwargs)**: Performs a translation of the original image while retaining the original image dimensions. Takes two possible keyword arguments, "horizontal_shift" and "vertical_shift" which are the number of pixels moved in the right and down directions respectively (coordinates are measured relative to the top left corner of the original image). By default, the background colour revealed by the image translation is black, but can be set according to the optional "bg_colour" keyword that takes values acceptable to the "mask_colour" argument. ** only the default is currently working
