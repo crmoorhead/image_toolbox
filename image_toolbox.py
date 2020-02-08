@@ -71,6 +71,18 @@ def process(image_src,functions,*args,**kwargs):
         from os import mkdir
         mkdir(kwargs["save_dir"])
     if image_src.__class__==dict:
+        if "string_filter" in kwargs:
+            if kwargs["string_filter"].__class__==str:
+                image_src={d:image_src[d] for d in image_src if kwargs["string_filter"] in d}
+                print(image_src)
+            elif kwargs["string_filter"].__class__==list:
+                for k in kwargs["string_filter"]:
+                    if k.__class__ == str:
+                        image_src={d:image_src[d] for d in image_src if k in d}
+                    else:
+                        pass
+            else:
+                pass
         if "save_dir" not in kwargs:
             print("You must provide a save directory")
         else:
@@ -432,8 +444,8 @@ def crop(im,*args,**kwargs):
         height_bounds=(centre[0]-kwargs["crop_height"]//2,centre[0]+kwargs["crop_height"]//2)
     else:
         height_bounds=(0,dims[1])
-    height_bounds=np.clip(height_bounds,0,dims[1])
-    width_bounds=np.clip(width_bounds,0,dims[0])
+    height_bounds=np.clip(height_bounds,0,dims[0])
+    width_bounds=np.clip(width_bounds,0,dims[1])
     im=im[height_bounds[0]:height_bounds[1],width_bounds[0]:width_bounds[1]]
     return im
 
