@@ -364,11 +364,11 @@ def shear(im,**kwargs):
     dims=im.shape[:2]
     if "shear_horz" in kwargs:
         affine=np.array([[1,kwargs["shear_horz"],0],[0,1,0]])
-        new_dims=(round(dims[1]*(kwargs["shear_horz"]+1)),dims[0])
+        new_dims=(round(dims[0]*(kwargs["shear_horz"]+1)),dims[0])
         im=cv2.warpAffine(im,affine,new_dims)
     elif "shear_vert" in kwargs:
         affine=np.array([[1,0,0],[kwargs["shear_vert"],1,0]])
-        new_dims=(dims[1],round(dims[0]*(kwargs["shear_vert"]+1)))
+        new_dims=(dims[1],round(dims[1]*(kwargs["shear_vert"]+1)))
         im=cv2.warpAffine(im,affine,new_dims)
     else:
         print("Neither horizontal not vertical shear factor given")
@@ -450,6 +450,37 @@ def crop(im,*args,**kwargs):
     return im
 
 def mask(im,mask,*args,**kwargs):
+    dims=im.shape[:2]
+    if "mask_centre" in kwargs:
+        centre=kwargs["mask_centre"]
+    else:
+        centre=(dims[1]//2,dims[0]//2)
+    if "mask_width" in kwargs:
+        width_bounds=(centre[1]-kwargs["mask_width"]//2,centre[1]+kwargs["mask_width"]//2)
+    else:
+        width_bounds=(0,dims[0])
+    if "mask_height" in kwargs:
+        height_bounds=(centre[0]-kwargs["mask_height"]//2,centre[0]+kwargs["mask_height"]//2)
+    else:
+        height_bounds=(0,dims[1])
+    height_bounds=np.clip(height_bounds,0,dims[0])
+    width_bounds=np.clip(width_bounds,0,dims[1])
+    if "mask_colour" in kwargs:
+        if kwargs["mask_colour"].__class__==list or kwargs["mask_colour"].__class__==tuple:
+            if len(kwargs["mask_colour"])==3:
+                mask_colour=np.array(list(kwargs["mask_colour"]),dtype="uint8")
+            elif len(kwargs["mask_colour"])==1:
+                mask_colour = np.array(list(kwargs["mask_colour"]*3), dtype="uint8")
+            else:
+                pass
+        elif kwargs["mask_colour"].__class__==int:
+            mask_colour = np.array([kwargs["mask_colour"]]*3, dtype="uint8")
+        else:
+            pass
+    else:
+        mask_colour=np.array([0,0,0],dtype="uint8")
+
+    im[height_bounds[0]:height_bounds[1],width_bounds[0]:width_bounds[1]]=mask_colour
     return im
 
 def histogram_shift(im,hist,*args,**kwargs):
